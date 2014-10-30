@@ -79,11 +79,11 @@ def printCommandName(parse_string, location, matched_tokens_list):
     import time
     print 'COMMAND (%s):' % str(time.clock()), matched_tokens_list
 
+# This recursive statement form taken from http://w3facility.info/question/simple-demonstration-of-using-pyparsings-indentedblock-recursively/
 statement = ((command + newline) ^ (command + arrow) ^ (named_command + arrow)) + ZeroOrMore(command_property)
 statement.setParseAction(printCommandName)
 statementBlock = Forward()
-blockContent = statement ^ statementBlock
-statementBlock << statement + Optional(indentedBlock(blockContent, [1]))
+statementBlock << statement + Optional(indentedBlock(statementBlock, [1]))
 
 if __name__ == '__main__':
     from pyparsing import *
